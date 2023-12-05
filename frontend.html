@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CalDining For You</title>
+    <style>
+        body {
+            background-color: #2e673c;
+            font-family: Arial, sans-serif;
+            background-image: url('background-image.jpg'); /* Add your background image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        h1 {
+            text-align: center;
+            color: #e7dd1a;
+        }
+        #recommendation {
+            text-align: center;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        #form-container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Add a semi-transparent background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        select, button, label {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #food-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+        }
+        #food-images img {
+            max-width: 100px;
+            max-height: 100px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CalDining For You</h1>
+    <div id="form-container">
+        <label for="calories">Number of Calories:</label>
+        <input type="number" id="calories">
+        <label for="diet">Dietary Preferences:</label>
+        <select id="diet">
+            <option value="none">Neither</option>
+            <option value="vegan">Vegan</option>
+            <option value="vegetarian">Vegetarian</option>
+        </select>
+        <label for="allergens">Allergens (Hold Ctrl/Cmd to select multiple):</label>
+        <select id="allergens" multiple>
+            <option value="milk">Milk</option>
+            <option value="eggs">Eggs</option>
+            <option value="shellfish">Shellfish</option>
+            <option value="fish">Fish</option>
+            <option value="nuts">Nuts</option>
+            <option value="wheat">Wheat</option>
+            <option value="peanut">Peanut</option>
+            <option value="sesame">Sesame</option>
+            <option value="soybeans">Soybeans</option>
+        </select>
+        <button onclick="recommendFood()">Get Food Recommendation</button>
+    </div>
+    <div id="food-images">
+        <img src="salad.png" alt="Salad">
+        <img src="chicken.png" alt="Chicken">
+        <img src="rice.png" alt="Rice">
+        <!-- Add more food images as needed -->
+    </div>
+    <div id="recommendation"></div>
+
+    <script>
+        function recommendFood() {
+            const calories = document.getElementById("calories").value;
+            const diet = document.getElementById("diet").value;
+            const allergens = Array.from(document.getElementById("allergens").selectedOptions).map(option => option.value);
+
+            // You can implement your recommendation logic here based on user input.
+            // Example: Display a recommendation based on the selected preferences.
+            const recommendation = "You should try the Healthy Salad!";
+            document.getElementById("recommendation").textContent = recommendation;
+        }
+    </script>
+</body>
+</html>
