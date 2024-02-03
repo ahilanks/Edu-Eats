@@ -1,29 +1,16 @@
+import requests
+from bs4 import BeautifulSoup
 from bs4 import BeautifulSoup
 import requests
 import random
+from datetime import date
+import datetime
 import json
 
 
-def get_nutrition(data_location, id, menu_id): #function retreives nutrtional data that's stored in ajax(dynamically loaded)
 
+def get_nutrition(data_location, id, menu_id): #function retreives nutritional data that's stored in ajax(dynamically loaded)
 
-    #reading dietary pref + allergens from original page
-    r = requests.get('https://dining.berkeley.edu/menus/', allow_redirects=True) 
-    soup = BeautifulSoup(r.text, 'html.parser')
-    element = soup.find('li', attrs={"data-id": f"{id}"})
-
-    items = element.find_all('span', attrs={"class":"allg-tooltip"})
-
-    labels = []
-
-    for label in items:
-        labels.append(label.get_text(strip=True))
-
-
-
-
-
-    #getting nutritional info from popup
     url = 'https://dining.berkeley.edu/wp-admin/admin-ajax.php'
     data = {
         'action': 'get_recipe_details',
@@ -47,26 +34,20 @@ def get_nutrition(data_location, id, menu_id): #function retreives nutrtional da
         if item.text.strip() in ['Calories (kcal):', 'Total Lipid/Fat (g):', 'Protein (g):', 'Carbohydrate (g):']
     }
 
-
-    # Now you can access the values from the dictionary
     calories = nutrition_values.get('Calories (kcal):', 'Not found')
     fat = nutrition_values.get('Total Lipid/Fat (g):', 'Not found')
     protein = nutrition_values.get('Protein (g):', 'Not found')
     carbs = nutrition_values.get('Carbohydrate (g):', 'Not found')
 
-    return title, calories, fat, carbs, protein, labels
+    return title, calories, fat, carbs, protein
 
 
 
-def all_menu_items():
-    locs = [['Cafe3_B', 'Cafe3_L', 'Cafe3_D', 'CK_B', 'CK_L', 'CK_D', 'Croads_B', 
-            'Croads_L', 'Croads_D', 'FH_B', 'FH_L', 'FH_D']]
+def all_menu_items(url, data, locs):
     
-    all_items = {'Cafe3_B': [], 'Cafe3_L': [], 'Cafe3_D': [], 'CK_B': [], 'CK_L': [], 'CK_D': [], 'Croads_B': [], 
-            'Croads_L': [], 'Croads_D': [], 'FH_B': [], 'FH_L': [], 'FH_D': []}
 
-    r = requests.get('https://dining.berkeley.edu/menus/', allow_redirects=True) #initalizing beautiful soup to read text
-    soup = BeautifulSoup(r.text, 'html.parser')
+    response = requests.post(url, data=data)
+    soup = BeautifulSoup(response.text, 'html.parser')
 
     recip_items = soup.find_all('li', class_=lambda x: x and 'recip' in x) #finds all elements that are menu-items
 
@@ -82,10 +63,25 @@ def all_menu_items():
         if temp != data_menuid: #if data_menuid changes, then it is at new location
             n+=1
             temp = data_menuid
-        all_items[locs[n]].append(get_nutrition(data_location, data_id, data_menuid)) #add all the info to appropriate location
+        locs[n].append(get_nutrition(data_location, data_id, data_menuid)) #add all the info to appropriate location
 
-    return all_items
+    return locs
 
+
+def dates(date):
+    url = 'https://dining.berkeley.edu/wp-admin/admin-ajax.php'
+    data = {
+        'action': 'cald_filter_xml',
+        'date': date
+    }
+    
+    today = datetime.datetime.today()
+    if today.weekday() == 5 or today.weekday() == 6: #checks if Saturday or Sunday
+        locs = [[], [], [], [], [], [], [], []]
+    else:
+        locs = [[], [], [], [], [], [], [], [], [], [], [], []]
+
+    return all_menu_items(url, data, locs)
 
 # cafe3_B = 1
 # cafe3_L = 2
@@ -102,17 +98,9 @@ def all_menu_items():
 
 
 
+today = date.today().strftime("%Y%m%d")
 
-
-
-
-locs = all_menu_items() #get all menu_items along with nutrtional info for current day into right location
-
-
-with open('cal_dining_menu.json', 'w') as f:
-  json.dump(locs, f)
-
-
+locs = dates(today) #get all menu_items along with nutrtional info for specific day into right location
 
 print('Welcome to EduEats!')
 location = input('Which location are you planning to eat on for this week?\n')
@@ -139,3 +127,4 @@ print()
 print('Lunch Menu: ', lunch_menu)
 print()
 print('Dinner Menu: ', dinner_menu)
+

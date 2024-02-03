@@ -4,16 +4,15 @@
     <title>CalDining For You</title>
     <style>
         body {
-            background-color: #2e673c;
+            background-color: #d3c5a9;
             font-family: Arial, sans-serif;
-            background-image: url('background-image.jpg'); /* Add your background image URL */
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
         h1 {
             text-align: center;
-            color: #e7dd1a;
+            color: #794a09;
         }
         #recommendation {
             text-align: center;
@@ -35,21 +34,10 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        #food-images {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
-        }
-        #food-images img {
-            max-width: 100px;
-            max-height: 100px;
-            margin: 10px;
-        }
     </style>
 </head>
 <body>
-    <h1>CalDining For You</h1>
+    <h1>EduEats</h1>
     <div id="form-container">
         <label for="calories">Number of Calories:</label>
         <input type="number" id="calories">
@@ -73,12 +61,6 @@
         </select>
         <button onclick="recommendFood()">Get Food Recommendation</button>
     </div>
-    <div id="food-images">
-        <img src="salad.png" alt="Salad">
-        <img src="chicken.png" alt="Chicken">
-        <img src="rice.png" alt="Rice">
-        <!-- Add more food images as needed -->
-    </div>
     <div id="recommendation"></div>
 
     <script>
@@ -88,8 +70,7 @@
             const allergens = Array.from(document.getElementById("allergens").selectedOptions).map(option => option.value);
 
             // You can implement your recommendation logic here based on user input.
-            // Example: Display a recommendation based on the selected preferences.
-            const recommendation = "You should try the Healthy Salad!";
+            // Example: Display a recommendation based on the selected preferences
             document.getElementById("recommendation").textContent = recommendation;
         }
     </script>
