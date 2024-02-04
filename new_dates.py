@@ -43,7 +43,7 @@ def get_nutrition(data_location, id, menu_id): #function retreives nutritional d
 
 
 
-def all_menu_items(url, data, locs):
+def all_menu_items(url, data, locs, all_items):
     
 
     response = requests.post(url, data=data)
@@ -63,9 +63,9 @@ def all_menu_items(url, data, locs):
         if temp != data_menuid: #if data_menuid changes, then it is at new location
             n+=1
             temp = data_menuid
-        locs[n].append(get_nutrition(data_location, data_id, data_menuid)) #add all the info to appropriate location
+        all_items[locs[n]].append(get_nutrition(data_location, data_id, data_menuid)) #add all the info to appropriate location
 
-    return locs
+    return all_items
 
 
 def dates(date):
@@ -75,13 +75,20 @@ def dates(date):
         'date': date
     }
     
-    today = datetime.datetime.today()
-    if today.weekday() == 5 or today.weekday() == 6: #checks if Saturday or Sunday
-        locs = [[], [], [], [], [], [], [], []]
-    else:
-        locs = [[], [], [], [], [], [], [], [], [], [], [], []]
+    date_today = datetime.datetime.today()
 
-    return all_menu_items(url, data, locs)
+    if date_today.weekday() == 5 or date_today.weekday() == 6: #checks if Saturday or Sunday
+        locs = ['Cafe3_B', 'Cafe3_D', 'CK_B', 'CK_D', 'Croads_B', 'Croads_D', 
+                 'FH_B', 'FH_D']
+        all_items = {'Cafe3_B': [], 'Cafe3_D': [], 'CK_B': [], 'CK_D': [], 'Croads_B': [], 'Croads_D': [], 
+                     'FH_B': [], 'FH_D': []}
+    else:
+        locs = ['Cafe3_B', 'Cafe3_L', 'Cafe3_D', 'CK_B', 'CK_L', 'CK_D', 'Croads_B', 
+            'Croads_L', 'Croads_D', 'FH_B', 'FH_L', 'FH_D']
+        all_items = {'Cafe3_B': [], 'Cafe3_L': [], 'Cafe3_D': [], 'CK_B': [], 'CK_L': [], 'CK_D': [], 'Croads_B': [], 
+                'Croads_L': [], 'Croads_D': [], 'FH_B': [], 'FH_L': [], 'FH_D': []}
+
+    return all_menu_items(url, data, locs, all_items)
 
 # cafe3_B = 1
 # cafe3_L = 2
@@ -97,15 +104,31 @@ def dates(date):
 # fh_D = 12
 
 
-
 today = date.today().strftime("%Y%m%d")
 
-locs = dates(today) #get all menu_items along with nutrtional info for specific day into right location
+now = datetime.now()
+
+
+current_hour = int(now.strftime("%H"))
+
+meal_period = ''
+
+
+
+
+if (current_hour>=0 and current_hour<=10):
+    meal_period = 'B'
+elif (current_hour>10 and current_hour<=15):
+    meal_period = 'L'
+elif (current_hour>15 and current_hour<=21):
+    meal_period = 'D'
+
+
+all_items = dates(today) #get all menu_items along with nutrtional info for specific day into right location
 
 print('Welcome to EduEats!')
 location = input('Which location are you planning to eat on for this week?\n')
-calorie = input('What is your calorie goal?\n')
-under_over = input('Are you trying to be under or over that goal?\n')
+
 
 
 #based on each location, find the menu_items
@@ -118,13 +141,20 @@ elif location.lower() == 'crossroads':
 elif location.lower() == 'foothill':
     range_start = 9
 
-breakfast_menu = random.sample(locs[range_start], 5) #randomly give some menu_items
-lunch_menu = random.sample(locs[range_start+1], 5)
-dinner_menu = random.sample(locs[range_start+2], 5)
+breakfast_menu = locs[range_start] #randomly give some menu_items
+lunch_menu = locs[range_start+1]
+dinner_menu = locs[range_start+2]
 
-print('Breakfast Menu: ', breakfast_menu)
+print('Breakfast Menu:')
+for item in breakfast_menu:
+    print(item)
 print()
-print('Lunch Menu: ', lunch_menu)
+print('Lunch Menu:')
+for item in breakfast_menu:
+    print(item)
 print()
-print('Dinner Menu: ', dinner_menu)
+print('Dinner Menu:')
+for item in breakfast_menu:
+    print(item)
+print()
 

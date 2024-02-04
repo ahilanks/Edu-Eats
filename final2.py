@@ -2,6 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 import random
 import json
+import time
+from datetime import datetime
+
 
 
 def get_nutrition(data_location, id, menu_id): #function retreives nutrtional data that's stored in ajax(dynamically loaded)
@@ -11,13 +14,13 @@ def get_nutrition(data_location, id, menu_id): #function retreives nutrtional da
     r = requests.get('https://dining.berkeley.edu/menus/', allow_redirects=True) 
     soup = BeautifulSoup(r.text, 'html.parser')
     element = soup.find('li', attrs={"data-id": f"{id}"})
+    if element:
+        items = element.find_all('span', attrs={"class":"allg-tooltip"})
 
-    items = element.find_all('span', attrs={"class":"allg-tooltip"})
+        labels = []
 
-    labels = []
-
-    for label in items:
-        labels.append(label.get_text(strip=True))
+        for label in items:
+            labels.append(label.get_text(strip=True))
 
 
 
@@ -53,17 +56,21 @@ def get_nutrition(data_location, id, menu_id): #function retreives nutrtional da
     fat = nutrition_values.get('Total Lipid/Fat (g):', 'Not found')
     protein = nutrition_values.get('Protein (g):', 'Not found')
     carbs = nutrition_values.get('Carbohydrate (g):', 'Not found')
-
+    print(title, calories, fat, carbs, protein, labels)
     return title, calories, fat, carbs, protein, labels
 
 
 
 def all_menu_items():
-    locs = [['Cafe3_B', 'Cafe3_L', 'Cafe3_D', 'CK_B', 'CK_L', 'CK_D', 'Croads_B', 
-            'Croads_L', 'Croads_D', 'FH_B', 'FH_L', 'FH_D']]
+    locs = ['Cafe3_B', 'Cafe3_L', 'Cafe3_D', 'CK_B', 'CK_L', 'CK_D', 'Croads_B', 
+            'Croads_L', 'Croads_D', 'FH_B', 'FH_L', 'FH_D']
+    
     
     all_items = {'Cafe3_B': [], 'Cafe3_L': [], 'Cafe3_D': [], 'CK_B': [], 'CK_L': [], 'CK_D': [], 'Croads_B': [], 
             'Croads_L': [], 'Croads_D': [], 'FH_B': [], 'FH_L': [], 'FH_D': []}
+    
+
+    print(locs)
 
     r = requests.get('https://dining.berkeley.edu/menus/', allow_redirects=True) #initalizing beautiful soup to read text
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -108,6 +115,8 @@ def all_menu_items():
 
 locs = all_menu_items() #get all menu_items along with nutrtional info for current day into right location
 
+print(locs)
+
 
 with open('cal_dining_menu.json', 'w') as f:
   json.dump(locs, f)
@@ -116,6 +125,7 @@ with open('cal_dining_menu.json', 'w') as f:
 
 print('Welcome to EduEats!')
 location = input('Which location are you planning to eat on for this week?\n')
+vegan = input('Are you vegan?\n')
 calorie = input('What is your calorie goal?\n')
 under_over = input('Are you trying to be under or over that goal?\n')
 
