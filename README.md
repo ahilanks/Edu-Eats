@@ -1,6 +1,16 @@
 # Making dorm food a little more bearable. One meal at a time.
 
-College is an exciting time in most people's lives. But one thing makes college life considerably worse: dorm food. To tell the truth, IT SUCKS. To be more technical, dorm food at most colleges around the nation taste horrible. To tell the truth, it's barely edible. But more critically, these foods are high in calories and fat; these foods can cause poor dietary habits that can negatively affect students' lives well into the future. "EduEats" is an app tailored specifically for college students, aiming to revolutionize the way they approach their dietary needs, particularly for dorm food. Whether its a gym bro(or girl!) trying to bulk with more protein or a student who is trying to lose weight, based on specific caloric, fat, carb, and protein intakes as well as dietary restrictions(allergies, vegetarian, vegan, gluten-free, no pork etc.), EduEats suggests custom meal plans for the week. We have started with Cal Dining, UC Berkeley's dorm dining halls but are trying to expand to other universities as well.
+College is an exciting time in most people's lives. But one thing makes college life considerably worse: dorm food. To tell the truth, IT SUCKS: dorm food at most colleges around the nation taste horrible. To tell the truth, it's barely edible. And more critically, these foods are high in calories and fat that can cause poor dietary habits and negatively affect students' lives well into the future. 
+
+Introducing "EduEats"!!!!!
+
+An app tailored specifically for college students, aiming to change the way they approach their dietary needs, particularly for dorm food. Whether its a gym bro(or girl!) trying to bulk or a student who is trying to lose weight, EduEats provides specific caloric, fat, carb, and protein information as well as dietary restrictions(allergies, vegetarian, vegan, gluten-free, no pork etc.) for dining hall meals.
+
+And there's more! Students can use EduEats to track their progress and measure how well they have been eating.
+
+Currently, the app is operating specifically for Cal Dining, UC Berkeley's dorm dining halls. In the future, the goal is to expand it to other universities as well.
+
+Eat away!
 
 
 
